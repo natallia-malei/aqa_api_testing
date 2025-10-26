@@ -48,3 +48,16 @@ class AccountApi:
         )
         return response
 
+    def put_v1_account_email(
+            self,
+            json_data
+        ):
+        headers = {
+            'accept': 'text/plain',
+            'Content-Type': 'application/json',
+        }
+        response = requests.put(
+            url = f'{self.host}/v1/account/email',
+            headers=headers,
+            json=json_data)
+        return response

@@ -11,7 +11,7 @@ def test_put_v1_account_email():
     login_api = LoginApi(host='http://5.63.153.31:5051')
     mailhog_api = MailhogApi(host='http://5.63.153.31:5025')
 
-    login = 'nm_test13'
+    login = 'nm_test15'
     email = f'{login}@gmail.com'
     password = '12345679'
     json_data = {
@@ -57,19 +57,13 @@ def test_put_v1_account_email():
     # Меняем емейл
     new_email = f'{login}_new@gmail.com'
 
-    headers = {
-        'accept': 'text/plain',
-        'X-Dm-Auth-Token': token,
-        'Content-Type': 'application/json',
-    }
-
     json_data = {
         'login': login,
         'password': password,
         'email': new_email,
     }
 
-    response = requests.put('http://5.63.153.31:5051/v1/account/email', headers=headers, json=json_data)
+    response = account_api.put_v1_account_email(json_data=json_data)
     assert response.status_code == 200, 'Не удалось сменить email'
 
     # Пытаемся войти, получаем 403
@@ -105,7 +99,6 @@ def test_put_v1_account_email():
     response = login_api.post_v1_account_login(json_data=json_data)
     print(response.status_code, response.text)
     assert response.status_code == 200, 'Не удалось авторизоваться с новым email'
-
 
 def get_activation_token_by_login(
         login,
