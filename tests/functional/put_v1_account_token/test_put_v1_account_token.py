@@ -12,7 +12,7 @@ def test_put_v1_account_token():
     login_api = LoginApi(host='http://5.63.153.31:5051')
     mailhog_api = MailhogApi(host='http://5.63.153.31:5025')
 
-    login = 'nm_test13'
+    login = 'nm_test19'
     email = f'{login}@gmail.com'
     password = '12345679'
     json_data = {
