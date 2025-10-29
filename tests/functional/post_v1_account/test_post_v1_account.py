@@ -3,7 +3,19 @@ from json import loads
 from dm_api_account.apis.account_api import AccountApi
 from dm_api_account.apis.login_api import LoginApi
 from api_mailhoog.apis.mailhog_api import MailhogApi
+# импорт настроек логов, где можем указать вид логов
+import structlog
 
+#чтобы лог был читабельный
+structlog.configure(
+    processors=[
+        structlog.processors.JSONRenderer(
+            indent=4,
+            ensure_ascii=True,
+            #sort_keys=True
+        )
+    ]
+)
 
 def test_v1_account():
     # Регистрация пользователя
@@ -11,7 +23,7 @@ def test_v1_account():
     login_api = LoginApi(host='http://5.63.153.31:5051')
     mailhog_api = MailhogApi(host='http://5.63.153.31:5025')
 
-    login = 'nm_test16'
+    login = 'nm_test20'
     email = f'{login}@gmail.com'
     password = '12345679'
     json_data = {
@@ -21,15 +33,15 @@ def test_v1_account():
     }
 
     response = account_api.post_v1_account(json_data=json_data)
-    print(response.status_code)
-    print(response.text)
+    # print(response.status_code)
+    # print(response.text)
     assert response.status_code == 201, f'Пользователь не был создан {response.json()}'
     #проверь если в нашем объекте статус код не 201 тогда выведи сообщение
 
     # Получить письмо из почтового сервера
     response = mailhog_api.get_api_v2_messages()
-    print(response.status_code)
-    print(response.text)
+    # print(response.status_code)
+    # print(response.text)
     assert response.status_code == 200, 'Письма не были получены'
 
     # Получить активационный токен
@@ -38,8 +50,8 @@ def test_v1_account():
 
     # Активация пользователя
     response = account_api.put_v1_account_token(token=token)
-    print(response.status_code)
-    print(response.text)
+    # print(response.status_code)
+    # print(response.text)
     assert response.status_code == 200, 'Пользователь не был активирован'
 
     # Авторизоваться
@@ -49,8 +61,8 @@ def test_v1_account():
         'rememberMe': True,
     }
     response = login_api.post_v1_account_login(json_data=json_data)
-    print(response.status_code)
-    print(response.text)
+    # print(response.status_code)
+    # print(response.text)
     assert response.status_code == 200, 'Пользователь не смог авторизоваться'
 
 
