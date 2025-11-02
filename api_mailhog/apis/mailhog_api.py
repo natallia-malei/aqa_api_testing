@@ -1,6 +1,7 @@
 import requests
 
 from restclient.client import RestClient
+from restclient.configuration import Configuration
 
 
 class MailhogApi(RestClient):
@@ -11,6 +12,13 @@ class MailhogApi(RestClient):
     # ):
     #     self.host = host
     #     self.headers = headers
+
+    def __init__(
+            self,
+            configuration: Configuration
+    ):
+        super().__init__(configuration)
+        self.mailhog_api = None
 
     def get_api_v2_messages(
             self,
